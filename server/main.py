@@ -14,15 +14,18 @@ from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from concurrent.futures import ThreadPoolExecutor
+import asyncio
 
 class QuestionRequest(BaseModel):
     question: str
+
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 app = FastAPI()
-app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"])
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # SQLite database initialization
 conn = sqlite3.connect('pdfs.db')
@@ -40,6 +43,9 @@ conn.commit()
 # read all pdf files and return text
 def get_pdf_text(pdf_docs):
     text = ""
+    conn = sqlite3.connect('pdfs.db')
+    c = conn.cursor()
+    
     for pdf in pdf_docs:
         pdf_reader = PdfReader(pdf.file)
         for page in pdf_reader.pages:
@@ -51,6 +57,7 @@ def get_pdf_text(pdf_docs):
         c.execute("INSERT INTO pdfs (filename, upload_date, text) VALUES (?, ?, ?)", (filename, upload_date, text))
 
     conn.commit()
+    conn.close() 
     return text
 
 # split text into chunks
@@ -101,17 +108,25 @@ def user_input(user_question):
     print(response)
     return response
 
+def process_pdf_files(files):
+    raw_text = get_pdf_text(files)
+    text_chunks = get_text_chunks(raw_text)
+    get_vector_store(text_chunks)
+    return {"message": "PDFs uploaded and processed successfully"}
+
 @app.post("/upload")
 async def upload_pdf_files(files: List[UploadFile] = File(...)):
     if not files:
         return {"error": "No files uploaded"}
     for file in files:
         print(f"Received file: {file.filename}")
-    raw_text = get_pdf_text(files)
-    text_chunks = get_text_chunks(raw_text)
-    get_vector_store(text_chunks)
-    return {"message": "PDFs uploaded and processed successfully"}
-
+    
+    # Process PDFs asynchronously
+    with ThreadPoolExecutor() as executor:
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(executor, process_pdf_files, files)
+    
+    return {"message": "PDFs uploaded and processing"}
 
 @app.post("/ask")
 async def ask_question(request: QuestionRequest):
