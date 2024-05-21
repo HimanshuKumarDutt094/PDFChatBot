@@ -1,0 +1,13 @@
+langchain
+PyPDF2
+python-dotenv
+faiss-cpu
+altair
+tiktoken==0.4.0
+huggingface-hub
+
+InstructorEmbedding
+sentence-transformers
+google-generativeai
+
+langchain_google_genai
