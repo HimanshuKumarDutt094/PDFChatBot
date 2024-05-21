@@ -31,7 +31,7 @@ export default function Component() {
     }
 
     try {
-      await axios.post("http://localhost:8000/upload", formData, {
+      await axios.post("http://35.154.29.54/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -46,7 +46,7 @@ export default function Component() {
   const handleAsk = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/ask",
+        "http://35.154.29.54/ask",
         { question },
         { headers: { "Content-Type": "application/json" } }
       );
