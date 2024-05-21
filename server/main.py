@@ -28,23 +28,23 @@ app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 # SQLite database initialization
-conn = sqlite3.connect('pdfs.db')
-c = conn.cursor()
-c.execute('''
-    CREATE TABLE IF NOT EXISTS pdfs (
-        id INTEGER PRIMARY KEY,
-        filename TEXT,
-        upload_date TEXT,
-        text TEXT
-    )
-''')
-conn.commit()
+# conn = sqlite3.connect('pdfs.db')
+# c = conn.cursor()
+# c.execute('''
+#     CREATE TABLE IF NOT EXISTS pdfs (
+#         id INTEGER PRIMARY KEY,
+#         filename TEXT,
+#         upload_date TEXT,
+#         text TEXT
+#     )
+# ''')
+# conn.commit()
 
 # read all pdf files and return text
 def get_pdf_text(pdf_docs):
     text = ""
-    conn = sqlite3.connect('pdfs.db')
-    c = conn.cursor()
+    # conn = sqlite3.connect('pdfs.db')
+    # c = conn.cursor()
     
     for pdf in pdf_docs:
         pdf_reader = PdfReader(pdf.file)
@@ -52,12 +52,12 @@ def get_pdf_text(pdf_docs):
             text += page.extract_text()
 
         # Store PDF details in the database
-        filename = pdf.filename
-        upload_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        c.execute("INSERT INTO pdfs (filename, upload_date, text) VALUES (?, ?, ?)", (filename, upload_date, text))
+        # filename = pdf.filename
+    #     upload_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #     c.execute("INSERT INTO pdfs (filename, upload_date, text) VALUES (?, ?, ?)", (filename, upload_date, text))
 
-    conn.commit()
-    conn.close() 
+    # conn.commit()
+    # conn.close() 
     return text
 
 # split text into chunks
