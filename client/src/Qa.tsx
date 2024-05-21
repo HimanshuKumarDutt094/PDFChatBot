@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "./components/ui/avatar";
 import Send from "./assets/send.svg?react";
 import CompanyLogo from "./assets/AILogo.svg?react";
-import BotLogo from "./assets/BotLogo.svg?react";
 type ChatEntry = {
   user: string;
   bot: string;
