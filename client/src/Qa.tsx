@@ -31,11 +31,15 @@ export default function Component() {
     }
 
     try {
-      await axios.post("http://35.154.29.54/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(
+        "https://pdfchatbot-production.up.railway.app/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       alert("Files uploaded successfully");
     } catch (error) {
       console.error("Error uploading files", error);
@@ -46,7 +50,7 @@ export default function Component() {
   const handleAsk = async () => {
     try {
       const response = await axios.post(
-        "http://35.154.29.54/ask",
+        "https://pdfchatbot-production.up.railway.app/ask",
         { question },
         { headers: { "Content-Type": "application/json" } }
       );
