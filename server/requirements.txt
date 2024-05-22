@@ -7,5 +7,5 @@ typing
 pydantic
 google-generativeai
 langchain_google_genai
-uvicorn
+hypercorn
 fastapi
