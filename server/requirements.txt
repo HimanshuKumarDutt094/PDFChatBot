@@ -9,3 +9,4 @@ google-generativeai
 langchain_google_genai
 fastapi==0.100.0
 hypercorn==0.14.4
+python-multipart
