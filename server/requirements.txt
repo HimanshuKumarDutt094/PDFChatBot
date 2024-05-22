@@ -7,5 +7,5 @@ typing
 pydantic
 google-generativeai
 langchain_google_genai
-hypercorn
-fastapi
+fastapi==0.100.0
+hypercorn==0.14.4

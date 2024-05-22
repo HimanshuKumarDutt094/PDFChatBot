@@ -39,6 +39,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 # conn.commit()
 
 # read all pdf files and return text
+
 def get_pdf_text(pdf_docs):
     text = ""
     # conn = sqlite3.connect('pdfs.db')
@@ -112,6 +113,10 @@ def process_pdf_files(files):
     get_vector_store(text_chunks)
     return {"message": "PDFs uploaded and processed successfully"}
 
+
+@app.get("/")
+async def root():
+    return {"greeting": "Hello, World!", "message": "Welcome to FastAPI!"}
 @app.post("/upload")
 async def upload_pdf_files(files: List[UploadFile] = File(...)):
     if not files:

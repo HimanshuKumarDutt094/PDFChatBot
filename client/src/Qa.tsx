@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "./components/ui/avatar";
 import Send from "./assets/send.svg?react";
 import CompanyLogo from "./assets/AILogo.svg?react";
+import BotAvatar from "./assets/BotLogo.png";
 type ChatEntry = {
   user: string;
   bot: string;
@@ -89,7 +90,7 @@ export default function Component() {
 
         <div className="flex">
           <Input
-            className="w-[5em]"
+            className="w-[5em] mr-2"
             type="file"
             multiple
             onChange={handleFileChange}
@@ -115,7 +116,7 @@ export default function Component() {
               </div>
               <div className="flex items-start mt-2 space-x-4">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage alt="Bot Avatar" src="src\assets\BotLogo.png" />
+                  <AvatarImage alt="Bot Avatar" src={BotAvatar} />
                   <AvatarFallback>B</AvatarFallback>
                 </Avatar>
                 <div className="bg-gray-100 p-4 rounded-lg max-w-[70%]">
